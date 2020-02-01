@@ -1,3 +1,4 @@
+from uuid import uuid4
 from datetime import datetime
 
 from mongoengine import Document
@@ -10,6 +11,7 @@ class User(Document):
 
 
 class Question(Document):
+    key = StringField(default=str(uuid4()))
     text = StringField()
     choices = DictField()
     meta = {'collection': 'question'}
@@ -22,5 +24,3 @@ class Answer(Document):
     submitted_at = DateTimeField(default=datetime.now())
 
     meta = {'collection': 'answer'}
-
-
