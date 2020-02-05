@@ -18,9 +18,11 @@ class Question(Document):
 
 
 class Answer(Document):
+    key = StringField(default=str(uuid4()))
     choice = StringField()
     question = ReferenceField(Question)
     submitted_by = ReferenceField(User)
     submitted_at = DateTimeField(default=datetime.now())
+    updated_at = DateTimeField(null=True)
 
     meta = {'collection': 'answer'}

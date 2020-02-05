@@ -1,10 +1,11 @@
 from uuid import uuid4
+from datetime import datetime
 
 from graphene import InputObjectType, Mutation, Field, String, Boolean, JSONString
 from mongoengine import DoesNotExist
 
-from models import Question, User
-from types_ import QuestionType, UserType
+from models import Answer, Question, User
+from types_ import AnswerType, QuestionType, UserType
 
 
 class UserInput(InputObjectType):
@@ -121,3 +122,78 @@ class DeleteQuestion(Mutation):
             deleted = False
 
         return DeleteQuestion(deleted=deleted)
+
+
+class AnswerInput(InputObjectType):
+    choice = String()
+    question = String()
+    submitted_by = String()
+
+
+class CreateAnswer(Mutation):
+    answer = Field(AnswerType)
+
+    class Arguments:
+        data = AnswerInput(required=True)
+
+    @staticmethod
+    def get_question_object(key):
+        return Question.objects.get(key=key)
+
+    @staticmethod
+    def get_user_object(name):
+        return User.objects.get(name=name)
+
+    def mutate(self, info, data):
+
+        user = CreateAnswer.get_user_object(data.submitted_by)
+        question = CreateAnswer.get_question_object(data.question)
+
+        answer = Answer(
+            key=str(uuid4()),
+            choice=data.choice,
+            question=question,
+            submitted_by=user
+        )
+        answer.save()
+
+        return CreateAnswer(answer=answer)
+
+
+class UpdateAnswer(Mutation):
+    answer = Field(AnswerType)
+
+    class Arguments:
+        key = String()
+        choice = String()
+
+    @staticmethod
+    def get_object(key):
+        return Answer.objects.get(key=key)
+
+    def mutate(self, info, key, choice):
+        answer = UpdateAnswer.get_object(key)
+
+        if choice:
+            answer.choice = choice
+
+        answer.updated_at = datetime.now()
+        answer.save()
+
+        return UpdateAnswer(answer=answer)
+
+
+class DeleteAnswer(Mutation):
+    deleted = Boolean()
+
+    class Arguments:
+        key = String(required=True)
+
+    def mutate(self, info, key):
+        try:
+            Answer.objects.get(key=key).delete()
+            deleted = True
+        except DoesNotExist:
+            deleted = False
+
+        return DeleteAnswer(deleted=deleted)

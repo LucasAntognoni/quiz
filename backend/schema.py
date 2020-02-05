@@ -4,7 +4,8 @@ from graphene_mongo import MongoengineConnectionField
 
 from types_ import AnswerType, QuestionType, UserType
 from mutations import CreateUser, UpdateUser, DeleteUser, \
-                      CreateQuestion, UpdateQuestion, DeleteQuestion
+                      CreateQuestion, UpdateQuestion, DeleteQuestion,\
+                      CreateAnswer, UpdateAnswer, DeleteAnswer
 
 
 class Mutations(ObjectType):
@@ -15,6 +16,10 @@ class Mutations(ObjectType):
     create_question = CreateQuestion.Field()
     update_question = UpdateQuestion.Field()
     delete_question = DeleteQuestion.Field()
+
+    create_answer = CreateAnswer.Field()
+    update_answer = UpdateAnswer.Field()
+    delete_answer = DeleteAnswer.Field()
 
 
 class Query(ObjectType):
