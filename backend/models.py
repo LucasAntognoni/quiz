@@ -2,7 +2,7 @@ from uuid import uuid4
 from datetime import datetime
 
 from mongoengine import Document
-from mongoengine.fields import DateTimeField, DictField, ListField, StringField, ReferenceField
+from mongoengine.fields import DateTimeField, DictField, StringField, ReferenceField
 
 
 class User(Document):
