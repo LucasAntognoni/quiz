@@ -3,13 +3,18 @@ from graphene.relay import Node
 from graphene_mongo import MongoengineConnectionField
 
 from types_ import AnswerType, QuestionType, UserType
-from mutations import CreateUser, UpdateUser, DeleteUser
+from mutations import CreateUser, UpdateUser, DeleteUser, \
+                      CreateQuestion, UpdateQuestion, DeleteQuestion
 
 
 class Mutations(ObjectType):
     create_user = CreateUser.Field()
     update_user = UpdateUser.Field()
     delete_user = DeleteUser.Field()
+
+    create_question = CreateQuestion.Field()
+    update_question = UpdateQuestion.Field()
+    delete_question = DeleteQuestion.Field()
 
 
 class Query(ObjectType):
