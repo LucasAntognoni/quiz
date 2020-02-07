@@ -27,8 +27,8 @@ No diretório backend, execute:
 
 Após a criação do ambiente virtual e instalação das bibliotecas:
 ```
-  ~$pipenv install
-  ~$python app.py 
+  ~$ pipenv install
+  ~$ python app.py 
 ```
 
 A aplicação estará disponível em: __http://127.0.0.1:5000/__.
