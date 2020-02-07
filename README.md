@@ -27,7 +27,7 @@ No diretório backend, execute:
 
 Após a criação do ambiente virtual e instalação das bibliotecas:
 ```
-  ~$ pipenv install
+  ~$ pipenv shell
   ~$ python app.py 
 ```
 
