@@ -1,4 +1,4 @@
-from graphene import ObjectType, Schema
+from graphene import ObjectType, Schema, Field, ID
 from graphene.relay import Node
 from graphene_mongo import MongoengineConnectionField
 
@@ -23,7 +23,9 @@ class Mutations(ObjectType):
 
 
 class Query(ObjectType):
+    id = ID(required=True)
     node = Node.Field()
+    viewer = Field(lambda: Query)
 
     user = Node.Field(UserType)
     question = Node.Field(QuestionType)
@@ -32,6 +34,15 @@ class Query(ObjectType):
     all_users = MongoengineConnectionField(UserType)
     all_questions = MongoengineConnectionField(QuestionType)
     all_answers = MongoengineConnectionField(AnswerType)
+
+    def resolve_viewer(self, args, context, info):
+        return info.parent_type
+
+    def resolve_id(self, args, context, info):
+        return 1
+
+    class Meta:
+        interfaces = (Node,)
 
 
 schema = Schema(

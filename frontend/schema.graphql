@@ -1,0 +1,205 @@
+schema {
+  query: Query
+  mutation: Mutations
+}
+
+input AnswerInput {
+  choice: String
+  question: String
+  submittedBy: String
+}
+
+type AnswerType implements Node {
+  choice: String
+
+  """The ID of the object."""
+  id: ID!
+  key: String
+  question: QuestionType
+  submittedAt: DateTime
+  submittedBy: UserType
+  updatedAt: DateTime
+}
+
+type AnswerTypeConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+
+  """Contains the nodes in this connection."""
+  edges: [AnswerTypeEdge]!
+}
+
+"""A Relay edge containing a `AnswerType` and its cursor."""
+type AnswerTypeEdge {
+  """The item at the end of the edge"""
+  node: AnswerType
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type CreateAnswer {
+  answer: AnswerType
+}
+
+type CreateQuestion {
+  question: QuestionType
+}
+
+type CreateUser {
+  user: UserType
+}
+
+"""
+The `DateTime` scalar type represents a DateTime
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar DateTime
+
+type DeleteAnswer {
+  deleted: Boolean
+}
+
+type DeleteQuestion {
+  deleted: Boolean
+}
+
+type DeleteUser {
+  deleted: Boolean
+}
+
+"""
+Allows use of a JSON String for input / output from the GraphQL schema.
+
+Use of this type is *not recommended* as you lose the benefits of having a defined, static
+schema (one of the key benefits of GraphQL).
+"""
+scalar JSONString
+
+type Mutations {
+  createUser(name: String!): CreateUser
+  updateUser(data: UserInput!): UpdateUser
+  deleteUser(name: String!): DeleteUser
+  createQuestion(data: QuestionInput!): CreateQuestion
+  updateQuestion(data: QuestionInput!, key: String): UpdateQuestion
+  deleteQuestion(key: String!): DeleteQuestion
+  createAnswer(data: AnswerInput!): CreateAnswer
+  updateAnswer(choice: String, key: String): UpdateAnswer
+  deleteAnswer(key: String!): DeleteAnswer
+}
+
+"""An object with an ID"""
+interface Node {
+  """The ID of the object."""
+  id: ID!
+}
+
+"""
+The Relay compliant `PageInfo` type, containing data necessary to paginate this connection.
+"""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query implements Node {
+  id: ID!
+
+  """The ID of the object"""
+  node(id: ID!): Node
+  viewer: Query
+
+  """The ID of the object"""
+  user(id: ID!): UserType
+
+  """The ID of the object"""
+  question(id: ID!): QuestionType
+
+  """The ID of the object"""
+  answer(id: ID!): AnswerType
+  allUsers(before: String, after: String, first: Int, last: Int, id: ID, name: String): UserTypeConnection
+  allQuestions(before: String, after: String, first: Int, last: Int, choices: JSONString, id: ID, key: String, text: String): QuestionTypeConnection
+  allAnswers(before: String, after: String, first: Int, last: Int, choice: String, id: ID, key: String, submittedAt: DateTime, updatedAt: DateTime, question: ID, submittedBy: ID): AnswerTypeConnection
+}
+
+input QuestionInput {
+  text: String
+  choices: JSONString
+}
+
+type QuestionType implements Node {
+  choices: JSONString
+
+  """The ID of the object."""
+  id: ID!
+  key: String
+  text: String
+}
+
+type QuestionTypeConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+
+  """Contains the nodes in this connection."""
+  edges: [QuestionTypeEdge]!
+}
+
+"""A Relay edge containing a `QuestionType` and its cursor."""
+type QuestionTypeEdge {
+  """The item at the end of the edge"""
+  node: QuestionType
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type UpdateAnswer {
+  answer: AnswerType
+}
+
+type UpdateQuestion {
+  question: QuestionType
+}
+
+type UpdateUser {
+  user: UserType
+}
+
+input UserInput {
+  oldName: String
+  newName: String
+}
+
+type UserType implements Node {
+  """The ID of the object."""
+  id: ID!
+  name: String
+}
+
+type UserTypeConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+
+  """Contains the nodes in this connection."""
+  edges: [UserTypeEdge]!
+}
+
+"""A Relay edge containing a `UserType` and its cursor."""
+type UserTypeEdge {
+  """The item at the end of the edge"""
+  node: UserType
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
